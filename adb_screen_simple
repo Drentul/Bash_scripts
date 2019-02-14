@@ -1,0 +1,14 @@
+#!/bin/bash
+
+var=1
+rand=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+screen_path="/sdcard/"$rand".png"
+name=$(date '+%Y-%m-%d_%H:%M:%S')"_"$rand
+save_path="/home/artemiy/Загрузки/screens/"
+device_id=$(adb devices | grep -w "device" | sed -n -e $var\p | awk '{print $1}')
+adb -s "$device_id" shell screencap -p "$screen_path"
+if [ ! -d "$save_path" ]; then
+    mkdir "$save_path"
+fi
+adb -s "$device_id" pull "$screen_path" -p "$save_path$name.png"
+adb -s "$device_id" shell rm "$screen_path"

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. adb_lib
+
+select_device
+
+droid_ver=$(adb -s "$device_id" shell getprop "ro.build.version.release" | tr -cd "[:print:]\n")
+device_name=$(adb -s "$device_id" shell getprop "ro.product.model" | tr -cd "[:print:]\n")
+
+echo "$device_name"', Android '"$droid_ver"

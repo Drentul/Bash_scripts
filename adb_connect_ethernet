@@ -1,0 +1,13 @@
+#!/bin/bash
+
+. adb_lib
+
+ip_calc
+
+IFS=' ' read -r -a array <<< "$ip_list"
+
+for element in "${array[@]}"
+do
+    echo "Connecting to $element"
+    adb connect $element
+done
