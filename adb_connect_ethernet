@@ -4,10 +4,8 @@
 
 ip_calc
 
-IFS=' ' read -r -a array <<< "$ip_list"
-
-for element in "${array[@]}"
+while read element
 do
     echo "Connecting to $element"
-    adb connect $element
-done
+    adb connect "$element"
+done <<< "$ip_list"
