@@ -92,6 +92,12 @@ else
 fi
 
 device_id=$(echo "$devices" | sed -n -e $var\p | awk '{print $1}')
+
+if [ -z "$device_id" ]; then
+	echo "No one device selected successfully. Press any key to exit"
+	read -n 1
+	exit 1
+fi
 }
 
 select_apk()
@@ -102,5 +108,12 @@ echo "$apks" | cat -n
 echo "Enter apk-file number:"
 read apk
 apk_name=$(echo "$apks" | sed -n -e $apk\p)
+
+if [ -z "$apk_name" ]; then
+	echo "No one apk selected successfully. Press any key to exit"
+	read -n 1
+	exit 1
+fi
+
 fullpath="$APK_PATH$apk_name"
 }
