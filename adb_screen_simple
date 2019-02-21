@@ -1,6 +1,5 @@
 #!/bin/bash
 
-var=1
 rand=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
 screen_path="/sdcard/"$rand".png"
 name=$(date '+%H:%M:%S')"_"$rand
@@ -13,12 +12,17 @@ fi
 
 while read device_id
 do
-    device_name=$(adb -s "$device_id" shell getprop "ro.product.model" | tr -cd "[:print:]\n")
-    save_path="$save_path/$device_name/$(date '+%Y-%m-%d')/"
-    if [ ! -d "$save_path" ]; then
-        mkdir "$save_path"
+    adb </dev/null -s "$device_id" shell screencap -p "$screen_path"
+done <<< "$devices"
+
+while read device_id
+do
+    device_name=$(adb </dev/null -s "$device_id" shell getprop "ro.product.model" | tr -cd "[:print:]\n")
+    device_path="$save_path/$device_name/$(date '+%Y-%m-%d')/"
+    echo "AAAA"
+    if [ ! -d "$device_path" ]; then
+        mkdir -p "$device_path"
     fi
-    adb -s "$device_id" shell screencap -p "$screen_path"
-    adb -s "$device_id" pull "$screen_path" -p "$save_path$name.png"
-    adb -s "$device_id" shell rm "$screen_path"
+    adb -s "$device_id" pull "$screen_path" -p "$device_path$name.png"
+    adb </dev/null -s "$device_id" shell rm "$screen_path"
 done <<< "$devices"
