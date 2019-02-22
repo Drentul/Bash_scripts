@@ -20,5 +20,5 @@ fi
 
 if [ -n "$apk_name" ]; then
 	echo "Installing <$apk_name>, please wait..."
-	adb -s "$device_id" install -r -d -t "$fullpath"
+	adb -s "$device_id" install "$fullpath"
 fi
