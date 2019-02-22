@@ -72,7 +72,7 @@ ip_list=$(nmap -sn $DECIMAL_ADDRESS/$BITS_COUNT | grep -oE '[0-9]{1,3}\.[0-9]{1,
 
 select_device()
 {
-devices=$(adb devices -l | grep -w "device" | sed -n -E 's/(^|.*)device(.*)model:(.*)device:(.*)/\1 \3 \4/p')
+devices=$(adb devices -l | grep -w "device" | sed -n -E 's/(^|.*) device (.*model:|.*device|.*)(.* |.*)(device:|'')(.*)/\1 \3 \5 /p')
 
 if [ -z "$devices" ]; then
 	echo "No one device connected to adb. Press any key to exit"
