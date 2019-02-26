@@ -1,0 +1,6 @@
+#!/bin/bash
+
+local_iface="enp0s31f6"
+tc=/sbin/tc
+
+sudo $tc qdisc del dev $local_iface root

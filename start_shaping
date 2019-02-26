@@ -1,0 +1,16 @@
+#!/bin/bash
+
+local_iface="enp0s31f6"
+tc=/sbin/tc
+
+channel_sp=256kbps
+
+sudo $tc qdisc del dev $local_iface root
+sudo $tc qdisc add dev $local_iface root handle 1: htb default 15
+sudo $tc class add dev $local_iface parent 1: classid 1:1 htb rate $channel_sp
+
+sp_oth_tr=256kbps
+m_sp_oth_tr=256kbps
+
+sudo $tc class add dev $local_iface parent 1:1 classid 1:15 htb prio 3 rate $sp_oth_tr ceil $m_sp_oth_tr 
+
