@@ -12,17 +12,16 @@ fi
 
 while read device_id
 do
-    adb </dev/null -s "$device_id" shell screencap -p "$screen_path"
+    adb </dev/null -s "$device_id" exec-out screencap -p "$screen_path"
 done <<< "$devices"
 
 while read device_id
 do
     device_name=$(adb </dev/null -s "$device_id" exec-out getprop "ro.product.model")
     device_path="$save_path/$device_name/$(date '+%Y-%m-%d')/"
-    echo "AAAA"
     if [ ! -d "$device_path" ]; then
         mkdir -p "$device_path"
     fi
     adb -s "$device_id" pull "$screen_path" -p "$device_path$name.png"
-    adb </dev/null -s "$device_id" shell rm "$screen_path"
+    adb </dev/null -s "$device_id" exec-out rm "$screen_path"
 done <<< "$devices"
