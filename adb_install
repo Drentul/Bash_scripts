@@ -11,7 +11,7 @@ select_apk
 #Добавить внутри функции проверки наличия, валидности и т.д.
 
 pkg=$(aapt dump badging "$fullpath"|awk -F" " '/package/ {print $2}'|awk -F"'" '/name=/ {print $2}')
-package_on_device=$(adb </dev/null -s "$device_id" shell pm list packages | grep "^package:$pkg$")
+package_on_device=$(adb </dev/null -s "$device_id" exec-out pm list packages | grep "^package:$pkg$")
 
 if [ -n "$package_on_device" ]; then
 	echo "Uninstalling <$pkg>, please wait..."
