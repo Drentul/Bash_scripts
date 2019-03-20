@@ -7,5 +7,5 @@ ip_calc
 while read element
 do
     echo "Connecting to $element"
-    adb connect "$element"
+    adb connect "$element:5555"
 done <<< "$ip_list"
