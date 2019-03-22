@@ -4,7 +4,7 @@
 
 select_device
 
-droid_ver=$(adb </dev/null -s "$device_id" exec-out getprop "ro.build.version.release")
-device_name=$(adb </dev/null -s "$device_id" exec-out getprop "ro.product.model")
+droid_ver=$(adb </dev/null -s "$device_id" shell getprop "ro.build.version.release" | tr -cd "[:print:]\n")
+device_name=$(adb </dev/null -s "$device_id" shell getprop "ro.product.model" | tr -cd "[:print:]\n")
 
 echo "$device_name"', Android '"$droid_ver"
