@@ -2,7 +2,7 @@
 
 rand=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
 screen_path="/sdcard/"$rand".png"
-name=$(date '+%H:%M:%S')"_"$rand
+name=$(date '+%H_%M_%S')"_"$rand
 save_path="/home/artemiy/Загрузки/screens"
 devices=$(adb devices | grep -w "device" | awk '{print $1}')
 
@@ -19,7 +19,6 @@ while read device_id
 do
     device_name=$(adb </dev/null -s "$device_id" shell getprop "ro.product.model" | tr -cd "[:print:]\n")
     device_path="$save_path/$device_name/$(date '+%Y-%m-%d')/"
-    echo "AAAA"
     if [ ! -d "$device_path" ]; then
         mkdir -p "$device_path"
     fi
