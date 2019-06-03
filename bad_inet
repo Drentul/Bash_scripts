@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+## Calomel.org 
+## https://calomel.org/network_loss_emulation.html
+#
+# Usage: ./calomel_netem.sh $argument
+
+network_interface="wlp2s0"
+
+channel_sp=10240kbps
+
+if [ $# -eq 0 ]
+   then
+    echo ""
+    echo "stop    = clear all netem profiles"
+    echo "show    = show active profiles"
+    echo "start   = enable htb + netem profile"
+    echo ""
+   exit
+ fi
+
+if [ $1 = "stop" ]
+   then
+     echo "netem profile off"
+     sudo tc qdisc del dev "$network_interface" root
+   exit
+ fi
+
+if [ $1 = "show" ]
+   then
+     echo "show netem profile"
+     tc qdisc show dev "$network_interface"
+   exit
+ fi
+
+if [ $1 = "start" ]
+   then
+     sudo tc qdisc del dev "$network_interface" root
+     sudo tc qdisc add dev "$network_interface" root handle 1: htb default 11
+     sudo tc class add dev "$network_interface" parent 1: classid 1:1 htb rate "$channel_sp"
+     sudo tc class add dev "$network_interface" parent 1:1 classid 1:11 htb rate "$channel_sp"
+     sudo tc qdisc add dev "$network_interface" parent 1:11 handle 10: netem delay 200ms loss 5% duplicate 1% corrupt 0.1% reorder 25% 50%
+     #sudo tc qdisc add dev "$network_interface" parent 1:11 handle 10: netem delay 50ms 10ms 25% loss 5% 25% duplicate 1% corrupt 0.1% reorder 25% 50%
+   exit
+ fi
+
+#### EOF #####
