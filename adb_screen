@@ -6,7 +6,7 @@ select_device
 
 screen_path="/sdcard/screen.png"
 save_path="/home/artemiy/Загрузки/screens/"
-adb </dev/null -s "$device_id" shell screencap -p /sdcard/screen.png
+adb </dev/null -s "$device_id" shell screencap -p "$screen_path"
 
 if [ ! -d "$save_path" ]; then
     mkdir -p "$save_path"
