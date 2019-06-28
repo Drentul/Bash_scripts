@@ -10,7 +10,7 @@ if [ "$fullpath" = "$APK_PATH" ]; then
 	select_apk
 fi
 
-if [ ! -f $fullpath ]; then
+if [ ! -f "$fullpath" ]; then
 	echo "Selected file $apk does not exist. Press any key to exit"
 	read -n 1
 	exit 1
