@@ -16,7 +16,7 @@ if [ ! -f "$fullpath" ]; then
 	exit 1
 fi
 
-pkg=$(aapt dump badging $fullpath|awk -F" " '/package/ {print $2}'|awk -F"'" '/name=/ {print $2}')
-act=$(aapt dump badging $fullpath|awk -F" " '/launchable-activity/ {print $2}'|awk -F"'" '/name=/ {print $2}')
+pkg=$(aapt dump badging "$fullpath"|awk -F" " '/package/ {print $2}'|awk -F"'" '/name=/ {print $2}')
+act=$(aapt dump badging "$fullpath"|awk -F" " '/launchable-activity/ {print $2}'|awk -F"'" '/name=/ {print $2}')
 adb -s "$device_id" shell am force-stop $pkg
 adb -s "$device_id" shell am start -n $pkg/$act
